@@ -1,0 +1,8 @@
+doctype html
+html
+  head
+    link rel="stylesheet" type="text/css" href="/stylesheets/style.css"
+    == yield_content :head
+  body
+    == yield_content :body
+    == yield_content :footer

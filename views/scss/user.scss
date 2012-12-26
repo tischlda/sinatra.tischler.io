@@ -1,13 +1,14 @@
 @import "fc-webicons";
 
+#picture {
+    float: right;
+}
 @media (min-width: 840px) {
   #content {
     width: 800px;
   }
   #picture {
-    max-height: 300px;
-    max-width: 300px;
-    float: right;
+    max-width: 360px;
   }
 }
 @media (min-width: 640px) and (max-width: 839px) {
@@ -15,9 +16,7 @@
     width: 600px;
   }
   #picture {
-    max-height: 200px;
     max-width: 160px;
-    float: right;
   }
 }
 @media (max-width: 639px) {
@@ -28,7 +27,6 @@
     display: none;
   }
 }
-
 #text {
   float: left;
   width: 400px;
@@ -38,7 +36,7 @@
   padding-right: 10px;
 }
 #contact-buttons {
-  margin-top: 10px;
+  margin-top: 30px;
   margin-bottom: 20px;
   list-style: none;
 }

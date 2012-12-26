@@ -17,7 +17,7 @@ h1 {
   margin-bottom: 25px;
 }
 #content {
-  @include gradient(#909090, #606060);
+  @include gradient(#a0a0a0, #808080);
   @include box-shadow(4px, 4px, 5px, 1px, #111111);
   @include rounded(3px);
 }

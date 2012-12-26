@@ -73,9 +73,8 @@
         addContact(data.email, 'E-Mail', mailtoLink);
         addContact(data.phone, 'Phone', calltoLink);
         addContact(data.web, 'Web', rawLink);
-        addContact(data.vcfUrl, 'vCard', rawLink, '#{@userName}.vcf');
 
-        addButton(data.email, 'mail', mailtoLink, 'E-Mail');
+        addButton(data.vcfUrl, 'vcard', rawLink, 'vCard');
         addButton(data.skype, 'skype', skypeLink, 'Skype');
         addButton(data.facebook, 'facebook', facebookLink, 'Facebook');
         addButton(data.xing, 'xing', xingLink, 'Xing');

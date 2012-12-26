@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:2.1
+N:<%= @user[:givenName] + ';' + @user[:surName] %>
+FN:<%= @user[:fullName] %>
+<% if @user[:phone] %>TEL;HOME;VOICE:<%= @user[:phone] %>
+<% end
+   if @user[:email] %>EMAIL;PREF;INTERNET:<%= @user[:email] %>
+<% end
+   if @user[:url] %>URL:<%= @user[:url] %>
+<% end
+   if @user[:vcfUrl] %>SOURCE:<%= @user[:vcfUrl] %>
+<% end %>END:VCARD

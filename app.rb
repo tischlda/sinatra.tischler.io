@@ -27,6 +27,8 @@ class UserEngine < Sinatra::Base
   # match /name and /name.format
   get %r{/(?<name>[^.]+)(\.(?<format>[^.]*))?} do |name, format|
     pass unless @user = User.find_by_name(name)
+    @user[:vcfUrl] = get_vcf_url name
+    @userName = name
 
     if !format
       slim :user
@@ -44,9 +46,15 @@ class UserEngine < Sinatra::Base
     value.to_json
   end
 
+  def get_vcf_url name
+    is_default_port = (request.scheme == 'http' && request.port == 80) ||
+                      (request.scheme == 'https' && request.port == 443)
+    "#{request.scheme}://#{request.host}#{is_default_port ? '' : ':' + request.port.to_s}/#{name}.vcf"
+  end
+
   def vcf_result value
     content_type 'text/vcard'
-    value.to_s
+    erb :vcf
   end
 end
 

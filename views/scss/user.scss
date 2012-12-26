@@ -1,0 +1,30 @@
+body {
+  background-color: #000000;
+}
+#content {
+  width: 800px;
+  margin: auto;
+  background-repeat: no-repeat;
+  height: 1024px;
+}
+#text {
+  position: relative;
+  color: rgb(32, 16, 16);
+  top: 240px;
+  left: 30px;
+  width: 280px;
+  padding: 10px 10px 10px 10px;
+  background-color: rgba(200, 190, 190, 0.7);
+  border-radius: 4px;
+}
+#text a {
+  color: maroon;
+}
+#text h1 {
+  margin-bottom: 10px;
+  font-size: 30pt;
+  font-weight: bold;
+}
+li {
+  margin-bottom: 5p;
+}

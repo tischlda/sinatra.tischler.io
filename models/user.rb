@@ -6,8 +6,12 @@ class User
       fullName: 'David Tischler',
       phone: '+61 434 762342',
       email: 'david@tischler.io',
+      web: 'http://tischler.io/david',
       skype: 'david.tischler',
-      web: 'http://tischler.io/david'
+      facebook: 'dtischler',
+      github: 'tischlda',
+      stackoverflow: 'tischlda',
+      about: 'Give a man a fish and he will eat for a day. Teach him how to fish, and he will destroy a whole ecosystem.'
     }
   }
 

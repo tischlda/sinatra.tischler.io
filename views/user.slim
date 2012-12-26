@@ -3,6 +3,7 @@
   link rel="stylesheet" type="text/css" href="/stylesheets/user.css"
   link rel="stylesheet" type="text/css" href="/stylesheets/dark.css"
   link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"
+
 - content_for :body do
   #content
     img#picture.portrait src="/images/#{@userName}.jpg"
@@ -15,7 +16,7 @@
           li
             a href="#contact" Contact
         #about
-          p Give a man a fish and he will eat for a day. Teach him how to fish, and he will destroy a whole ecosystem.
+          p= @user[:about]
         #contact
           table#contactDetails
     #footer style="clear: both;"
@@ -27,26 +28,34 @@
     $(function () {
       $("#tabs").tabs();
       $("#tab-header").show();
-      var addContact = function (name, link, display) {
-        $('#contactDetails').append(
-          $('<tr></tr>')
-          .append($('<td></td>').addClass('label').append(name + ': '))
-          .append($('<td></td>').append(
-            link ?
-              $('<a></a>', {
-                href: link,
-                text: display
-              })
-            :
-              display
-          )));
+      var addContact = function (value, label, link, text) {
+        if (value) {
+          $('#contactDetails').append(
+            $('<tr></tr>')
+            .append($('<td></td>').addClass('label').append(label + ': '))
+            .append($('<td></td>').append(
+              link ?
+                $('<a></a>', {
+                  href: typeof(link) == 'function' ? link(value) : link,
+                  text: typeof(text) == 'function' ? text(value) : (text ? text : value)
+                })
+              :
+                value
+            )));
+        }
       };
 
+      var link = function(scheme, value) { return scheme + ':' + value; };
+      var mailtoLink = function(value) { return link('mailto', value); };
+      var calltoLink = function(value) { return link('callto', value.replace(/ /g, '')); };
+      var skypeLink = function(value) { return link('skype', value); };
+      var rawLink = function(value) { return value; };
+
       $.get('david.json', function(data) {
-        addContact('mail', 'mailto:' + data.email, data.email);
-        addContact('phone', 'callto:' + data.phone.replace(/ /g, ''), data.phone);
-        addContact('skype', 'skype:' + data.skype, data.skype);
-        addContact('web', data.web, data.web);
-        addContact('vCard', data.vcfUrl, '#{@userName}.vcf');
+        addContact(data.email, 'E-Mail', mailtoLink);
+        addContact(data.phone, 'Phone', calltoLink);
+        addContact(data.skype, 'Skype', skypeLink);
+        addContact(data.web, 'Web', rawLink);
+        addContact(data.vcfUrl, 'vCard', rawLink, '#{@userName}.vcf');
       });
     });

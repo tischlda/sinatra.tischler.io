@@ -6,7 +6,8 @@ class User
       fullName: 'David Tischler',
       phone: '+61 434 762342',
       email: 'david@tischler.io',
-      url: 'http://www.tischler.io/david'
+      skype: 'david.tischler',
+      web: 'http://tischler.io/david'
     }
   }
 

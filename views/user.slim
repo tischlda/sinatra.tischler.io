@@ -1,24 +1,37 @@
 - content_for :head do
+  title tischler.io/#{@userName}
   link rel="stylesheet" type="text/css" href="/stylesheets/user.css"
-  css:
-    #content {
-      background-image: url(images/#{@userName}.jpg);
-    }
-
+  link rel="stylesheet" type="text/css" href="/stylesheets/dark.css"
+  link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"
 - content_for :body do
   #content
+    img#picture.portrait src="/images/#{@userName}.jpg"
     #text
-      ul#contact
+      h1= @user[:fullName]
+      #tabs
+        ul#tab-header style="display: none;"
+          li
+            a href="#about" About
+          li
+            a href="#contact" Contact
+        #about
+          p Give a man a fish and he will eat for a day. Teach him how to fish, and he will destroy a whole ecosystem.
+        #contact
+          table#contactDetails
+    #footer style="clear: both;"
 
 - content_for :footer do
-  script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"
+  script src="http://code.jquery.com/jquery-1.8.3.js"
+  script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"
   javascript:
     $(function () {
+      $("#tabs").tabs();
+      $("#tab-header").show();
       var addContact = function (name, link, display) {
-        $('#contact').append(
-          $('<li></li>')
-          .append(name + ': ')
-          .append(
+        $('#contactDetails').append(
+          $('<tr></tr>')
+          .append($('<td></td>').addClass('label').append(name + ': '))
+          .append($('<td></td>').append(
             link ?
               $('<a></a>', {
                 href: link,
@@ -26,13 +39,14 @@
               })
             :
               display
-          ));
+          )));
       };
 
       $.get('david.json', function(data) {
         addContact('mail', 'mailto:' + data.email, data.email);
         addContact('phone', 'callto:' + data.phone.replace(/ /g, ''), data.phone);
-        addContact('web', data.url, data.url);
-        addContact('vcf', data.vcfUrl, data.vcfUrl);
+        addContact('skype', 'skype:' + data.skype, data.skype);
+        addContact('web', data.web, data.web);
+        addContact('vCard', data.vcfUrl, '#{@userName}.vcf');
       });
     });

@@ -6,7 +6,7 @@
 
 - content_for :body do
   #content
-    img#picture.portrait src="/images/#{@userName}.jpg"
+    img#picture.portrait src=gravatar_url(@user[:email], :size => 400)
     #text
       h1= @user[:fullName]
       #tabs

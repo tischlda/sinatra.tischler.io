@@ -21,6 +21,7 @@ end
 
 class Sinatra::Base
   helpers Sinatra::ContentFor2
+  helpers Gravatarify::Helper
 end
 
 class UserEngine < Sinatra::Base

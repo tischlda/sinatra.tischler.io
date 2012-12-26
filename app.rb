@@ -57,10 +57,10 @@ class UserEngine < Sinatra::Base
 end
 
 class App < Sinatra::Base
+  use ScssEngine
+  use UserEngine
+
   get '/' do
     slim :index
   end
-
-  use ScssEngine
-  use UserEngine
 end

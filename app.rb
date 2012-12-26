@@ -1,5 +1,6 @@
 require './models/user'
-require 'sinatra/content_for2'
+require 'sinatra/json'
+require 'sinatra/content_for'
 
 class ScssEngine < Sinatra::Base
   configure do
@@ -20,7 +21,8 @@ class ScssEngine < Sinatra::Base
 end
 
 class Sinatra::Base
-  helpers Sinatra::ContentFor2
+  helpers Sinatra::ContentFor
+  helpers Sinatra::JSON
   helpers Gravatarify::Helper
 end
 
@@ -35,16 +37,11 @@ class UserEngine < Sinatra::Base
       slim :user
     else
       case format.to_sym
-        when :json then json_result(@user)
+        when :json then json @user
         when :vcf then vcf_result(@user)
         else pass
       end
     end
-  end
-
-  def json_result value
-    content_type :json
-    value.to_json
   end
 
   def get_vcf_url name

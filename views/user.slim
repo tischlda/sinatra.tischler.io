@@ -18,7 +18,8 @@
         #about
           p= @user[:about]
         #contact
-          table#contactDetails
+          table#contact-list
+          ul#contact-buttons
     #footer style="clear: both;"
 
 - content_for :footer do
@@ -28,9 +29,10 @@
     $(function () {
       $("#tabs").tabs();
       $("#tab-header").show();
+      
       var addContact = function (value, label, link, text) {
         if (value) {
-          $('#contactDetails').append(
+          $('#contact-list').append(
             $('<tr></tr>')
             .append($('<td></td>').addClass('label').append(label + ': '))
             .append($('<td></td>').append(
@@ -45,17 +47,39 @@
         }
       };
 
-      var link = function(scheme, value) { return scheme + ':' + value; };
-      var mailtoLink = function(value) { return link('mailto', value); };
-      var calltoLink = function(value) { return link('callto', value.replace(/ /g, '')); };
-      var skypeLink = function(value) { return link('skype', value); };
+      var addButton = function (value, type, link, text) {
+      if (value) {
+          $('#contact-buttons').append(
+            $('<li></li>').append(
+                $('<a></a>', {
+                  href: typeof(link) == 'function' ? link(value) : link,
+                  title: typeof(text) == 'function' ? text(value) : (text ? text : value),
+                  rel: 'me'
+                }).addClass('button fc-webicon').addClass(type)
+            ));
+        }};
+
+      var schemeLink = function(scheme, value) { return scheme + ':' + value; };
       var rawLink = function(value) { return value; };
+      var mailtoLink = function(value) { return schemeLink('mailto', value); };
+      var calltoLink = function(value) { return schemeLink('callto', value.replace(/ /g, '')); };
+      var skypeLink = function(value) { return schemeLink('skype', value); };
+      var facebookLink = function(value) { return 'https://www.facebook.com/' + value; };
+      var stackoverflowLink = function(value) { return 'https://www.stackoverflow.com/users/' + value; };
+      var xingLink = function(value) { return 'https://www.xing.com/profile/' + value; };
+      var githubLink = function(value) { return 'https://www.github.com/' + value; };
 
       $.get('david.json', function(data) {
         addContact(data.email, 'E-Mail', mailtoLink);
         addContact(data.phone, 'Phone', calltoLink);
-        addContact(data.skype, 'Skype', skypeLink);
         addContact(data.web, 'Web', rawLink);
         addContact(data.vcfUrl, 'vCard', rawLink, '#{@userName}.vcf');
+
+        addButton(data.email, 'mail', mailtoLink, 'E-Mail');
+        addButton(data.skype, 'skype', skypeLink, 'Skype');
+        addButton(data.facebook, 'facebook', facebookLink, 'Facebook');
+        addButton(data.xing, 'xing', xingLink, 'Xing');
+        addButton(data.stackoverflow, 'stackoverflow', stackoverflowLink, 'Stack Overflow');
+        addButton(data.github, 'github', githubLink, 'GitHub');
       });
     });

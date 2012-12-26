@@ -1,8 +1,12 @@
 @import "reset";
 
 #content {
-  width: 800px;
   margin: auto;
   margin-top: 40px;
   padding: 20px 20px 20px 20px;
+}
+a:hover {
+  text-decoration: none;
+}
+a.button {
 }

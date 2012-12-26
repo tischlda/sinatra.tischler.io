@@ -1,14 +1,50 @@
-#picture {
-  max-height: 380px;
-  max-width: 300px;
-  float: right;
+@import "fc-webicons";
+
+@media (min-width: 840px) {
+  #content {
+    width: 800px;
+  }
+  #picture {
+    max-height: 300px;
+    max-width: 300px;
+    float: right;
+  }
 }
+@media (min-width: 640px) and (max-width: 839px) {
+  #content {
+    width: 600px;
+  }
+  #picture {
+    max-height: 200px;
+    max-width: 160px;
+    float: right;
+  }
+}
+@media (max-width: 639px) {
+  #content {
+    width: 400px;
+  }
+  #picture {
+    display: none;
+  }
+}
+
 #text {
   float: left;
   width: 400px;
   padding: 10px 10px 10px 10px;
 }
-td {
+#contact-list td {
+  padding-right: 10px;
+}
+#contact-buttons {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  list-style: none;
+}
+#contact-buttons li {
+  position: relative;
+  float: left;
   padding-right: 10px;
 }
 #tabs {

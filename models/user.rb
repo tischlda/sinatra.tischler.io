@@ -10,7 +10,8 @@ class User
       skype: 'david.tischler',
       facebook: 'dtischler',
       github: 'tischlda',
-      stackoverflow: 'tischlda',
+      stackoverflow: '54499',
+      xing: 'David_Tischler',
       about: 'Give a man a fish and he will eat for a day. Teach him how to fish, and he will destroy a whole ecosystem.'
     }
   }

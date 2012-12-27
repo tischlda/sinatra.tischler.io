@@ -8,5 +8,7 @@ use Rack::Rewrite do
        :if => Proc.new { |rack_env| rack_env['SERVER_NAME'] =~ /^www\./i }
 end
 
+use Rack::Deflater
+
 require './app'
 run App

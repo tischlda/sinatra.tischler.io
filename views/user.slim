@@ -18,45 +18,54 @@
           p= @user[:about]
         #contact
           table#contact-list
-          ul#contact-buttons
+            tbody data-bind="foreach: contacts"
+              tr
+                td.label data-bind="text: label"
+                td
+                  a data-bind="attr: { href: link }, text: text"
+          ul#contact-buttons data-bind="foreach: buttons"
+            li
+              a data-bind="css: 'fc-webicon ' + type, attr: { href: link }, text: text"
+
     #footer style="clear: both;"
 
 - content_for :footer do
   script src="http://code.jquery.com/jquery-1.8.3.js"
+  script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.0/knockout-min.js"
   script src="/scripts/jquery-ui-custom.js"
   javascript:
     $(function () {
       $("#tabs").tabs();
       $("#tab-header").show();
-      
-      var addContact = function (value, label, link, text) {
-        if (value !== undefined) {
-          $('#contact-list').append(
-            $('<tr></tr>')
-            .append($('<td></td>').addClass('label').append(label + ': '))
-            .append($('<td></td>').append(
-              link ?
-                $('<a></a>', {
-                  href: link instanceof Function ? link(value) : link,
-                  text: text instanceof Function ? text(value) : (text ? text : value)
-                })
-              :
-                value
-            )));
-        }
-      };
+            
+      var ViewModel = function() {
+        var self = this;
+        
+        self.contacts = ko.observableArray();
+        self.buttons = ko.observableArray();
 
-      var addButton = function (value, type, link, text) {
-      if (value !== undefined) {
-          $('#contact-buttons').append(
-            $('<li></li>').append(
-                $('<a></a>', {
-                  href: link instanceof Function ? link(value) : link,
-                  title: text instanceof Function ? text(value) : (text ? text : value),
-                  rel: 'me'
-                }).addClass('button fc-webicon').addClass(type)
-            ));
-        }};
+        var add = function (collection, value, type, label, link, text) {
+          if (value !== undefined) {
+            collection.push({
+              value: value,
+              type: type,
+              label: label,
+              link: link instanceof Function ? link(value) : link,
+              text: text instanceof Function ? text(value) : (text ? text : value)
+            });
+          }
+
+          return self;
+        };
+
+        self.addContact = function (value, type, label, link, text) {
+          return add(self.contacts, value, type, label, link, text);
+        };
+
+        self.addButton = function (value, type, label, link, text) {
+          return add(self.buttons, value, type, label, link, text);
+        };
+      };
 
       var schemeLink = function(scheme, value) { return scheme + ':' + value; };
       var rawLink = function(value) { return value; };
@@ -68,16 +77,19 @@
       var xingLink = function(value) { return 'https://www.xing.com/profile/' + value; };
       var githubLink = function(value) { return 'https://www.github.com/' + value; };
 
-      $.get('david.json', function(data) {
-        addContact(data.email, 'E-Mail', mailtoLink);
-        addContact(data.phone, 'Phone', calltoLink);
-        addContact(data.web, 'Web', rawLink);
+      var viewModel = new ViewModel();
+      ko.applyBindings(viewModel);
 
-        addButton(data.vcfUrl, 'vcard', rawLink, 'vCard');
-        addButton(data.skype, 'skype', skypeLink, 'Skype');
-        addButton(data.facebook, 'facebook', facebookLink, 'Facebook');
-        addButton(data.xing, 'xing', xingLink, 'Xing');
-        addButton(data.stackoverflow, 'stackoverflow', stackoverflowLink, 'Stack Overflow');
-        addButton(data.github, 'github', githubLink, 'GitHub');
+      $.get('david.json', function(data) {
+        viewModel
+          .addContact(data.email, 'mail', 'E-Mail', mailtoLink)
+          .addContact(data.phone, 'phone', 'Phone', calltoLink)
+          .addContact(data.web, 'web', 'Web', rawLink)
+          .addButton(data.vcfUrl, 'vcard', 'vCard', rawLink)
+          .addButton(data.skype, 'skype', 'Skype', skypeLink)
+          .addButton(data.facebook, 'facebook', 'Facebook', facebookLink)
+          .addButton(data.xing, 'xing', 'Xing', xingLink)
+          .addButton(data.stackoverflow, 'stackoverflow', 'Stack Overflow', stackoverflowLink)
+          .addButton(data.github, 'github', 'GitHub', githubLink);
       });
     });

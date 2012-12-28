@@ -9,7 +9,7 @@
     #text
       h1= @user[:fullName]
       #tabs
-        ul#tab-header style="display: none;"
+        ul#tab-header
           li
             a href="#about" About
           li
@@ -30,9 +30,10 @@
     #footer style="clear: both;"
 
 - content_for :footer do
-  script src="http://code.jquery.com/jquery-1.8.3.js"
+  script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"
   script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.0/knockout-min.js"
   script src="/scripts/jquery-ui-custom.js"
+  
   javascript:
     $(function () {
       $("#tabs").tabs();
@@ -67,29 +68,32 @@
         };
       };
 
-      var schemeLink = function(scheme, value) { return scheme + ':' + value; };
-      var rawLink = function(value) { return value; };
-      var mailtoLink = function(value) { return schemeLink('mailto', value); };
-      var calltoLink = function(value) { return schemeLink('callto', value.replace(/ /g, '')); };
-      var skypeLink = function(value) { return schemeLink('skype', value); };
-      var facebookLink = function(value) { return 'https://www.facebook.com/' + value; };
-      var stackoverflowLink = function(value) { return 'https://www.stackoverflow.com/users/' + value; };
-      var xingLink = function(value) { return 'https://www.xing.com/profile/' + value; };
-      var githubLink = function(value) { return 'https://www.github.com/' + value; };
+      var linkFormatter = {
+        scheme: function(scheme, value) { return scheme + ':' + value; };
+        mailto: function(value) { return schemeLink('mailto', value); };
+        callto: function(value) { return schemeLink('callto', value.replace(/ /g, '')); };
+        skype: function(value) { return schemeLink('skype', value); };
+        facebook: function(value) { return 'https://www.facebook.com/' + value; };
+        stackoverflow: function(value) { return 'https://www.stackoverflow.com/users/' + value; };
+        xing: function(value) { return 'https://www.xing.com/profile/' + value; };
+        github: function(value) { return 'https://www.github.com/' + value; };
+      };
 
       var viewModel = new ViewModel();
       ko.applyBindings(viewModel);
 
       $.get('david.json', function(data) {
         viewModel
-          .addContact(data.email, 'mail', 'E-Mail', mailtoLink)
-          .addContact(data.phone, 'phone', 'Phone', calltoLink)
-          .addContact(data.web, 'web', 'Web', rawLink)
-          .addButton(data.vcfUrl, 'vcard', 'vCard', rawLink)
-          .addButton(data.skype, 'skype', 'Skype', skypeLink)
-          .addButton(data.facebook, 'facebook', 'Facebook', facebookLink)
-          .addButton(data.xing, 'xing', 'Xing', xingLink)
-          .addButton(data.stackoverflow, 'stackoverflow', 'Stack Overflow', stackoverflowLink)
-          .addButton(data.github, 'github', 'GitHub', githubLink);
+          .addContact(data.email, 'mail', 'E-Mail', linkFormatter.mailto)
+          .addContact(data.phone, 'phone', 'Phone', linkFormatter.callto)
+          .addContact(data.web, 'web', 'Web');
+
+        viewModel
+          .addButton(data.vcfUrl, 'vcard', 'vCard')
+          .addButton(data.skype, 'skype', 'Skype', linkFormatter.skype)
+          .addButton(data.facebook, 'facebook', 'Facebook', linkFormatter.facebook)
+          .addButton(data.xing, 'xing', 'Xing', linkFormatter.xing)
+          .addButton(data.stackoverflow, 'stackoverflow', 'Stack Overflow', linkFormatter.stackoverflow)
+          .addButton(data.github, 'github', 'GitHub', linkFormatter.github);
       });
     });

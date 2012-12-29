@@ -51,7 +51,7 @@
               value: value,
               type: type,
               label: label,
-              link: link instanceof Function ? link(value) : link,
+              link: link instanceof Function ? link(value) : value,
               text: text instanceof Function ? text(value) : (text ? text : value)
             });
           }
@@ -69,14 +69,13 @@
       };
 
       var linkFormatter = {
-        scheme: function(scheme, value) { return scheme + ':' + value; };
-        mailto: function(value) { return schemeLink('mailto', value); };
-        callto: function(value) { return schemeLink('callto', value.replace(/ /g, '')); };
-        skype: function(value) { return schemeLink('skype', value); };
-        facebook: function(value) { return 'https://www.facebook.com/' + value; };
-        stackoverflow: function(value) { return 'https://www.stackoverflow.com/users/' + value; };
-        xing: function(value) { return 'https://www.xing.com/profile/' + value; };
-        github: function(value) { return 'https://www.github.com/' + value; };
+        mailto: function(value) { return 'mailto:' + value; },
+        callto: function(value) { return 'callto:' + value.replace(/ /g, ''); },
+        skype: function(value) { return 'skype:' + value; },
+        facebook: function(value) { return 'https://www.facebook.com/' + value; },
+        stackoverflow: function(value) { return 'https://www.stackoverflow.com/users/' + value; },
+        xing: function(value) { return 'https://www.xing.com/profile/' + value; },
+        github: function(value) { return 'https://www.github.com/' + value; }
       };
 
       var viewModel = new ViewModel();

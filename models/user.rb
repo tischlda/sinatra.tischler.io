@@ -1,22 +1,17 @@
 class User
-  @@users = {
-    david: {
-      givenName: 'David',
-      surName: 'Tischler',
-      fullName: 'David Tischler',
-      phone: '+61 434 762342',
-      email: 'david@tischler.io',
-      web: 'http://tischler.io/david',
-      skype: 'david.tischler',
-      facebook: 'dtischler',
-      github: 'tischlda',
-      stackoverflow: '54499',
-      xing: 'David_Tischler',
-      about: 'Give a man a fish and he will eat for a day. Teach him how to fish, and he will destroy a whole ecosystem.'
-    }
-  }
+  include Mongoid::Document
 
-  def User.find_by_name name
-    return @@users[name.to_sym]
-  end
+  field :name, type: String
+  field :givenName, type: String
+  field :surName, type: String
+  field :fullName, type: String
+  field :phone, type: String
+  field :email, type: String
+  field :web, type: String
+  field :skype, type: String
+  field :facebook, type: String
+  field :github, type: String
+  field :stackoverflow, type: String
+  field :xing, type: String
+  field :about, type: String
 end

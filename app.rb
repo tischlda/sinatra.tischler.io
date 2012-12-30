@@ -1,5 +1,4 @@
 require './models/user'
-require 'sinatra/json'
 require 'sinatra/content_for'
 
 class ScssEngine < Sinatra::Base
@@ -22,14 +21,17 @@ end
 
 class Sinatra::Base
   helpers Sinatra::ContentFor
-  helpers Sinatra::JSON
   helpers Gravatarify::Helper
 end
 
 class UserEngine < Sinatra::Base
+  configure :development do
+    Mongoid.load!('config/mongoid.yml')
+  end
+
   # match /name and /name.format
   get %r{/(?<name>[^.]+)(\.(?<format>[^.]*))?} do |name, format|
-    pass unless @user = User.find_by_name(name)
+    pass unless @user = User.where(name: name).first
     @user[:vcfUrl] = get_vcf_url name
     @userName = name
 
@@ -37,7 +39,7 @@ class UserEngine < Sinatra::Base
       slim :user
     else
       case format.to_sym
-        when :json then json @user
+        when :json then json_result(@user)
         when :vcf then vcf_result(@user)
         else pass
       end
@@ -53,6 +55,11 @@ class UserEngine < Sinatra::Base
   def vcf_result value
     content_type 'text/vcard'
     erb :vcf
+  end
+
+  def json_result value
+    content_type :json
+    value.to_json
   end
 end
 

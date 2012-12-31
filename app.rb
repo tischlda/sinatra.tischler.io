@@ -25,7 +25,7 @@ class Sinatra::Base
 end
 
 class UserEngine < Sinatra::Base
-  configure :development do
+  configure do
     Mongoid.load!('config/mongoid.yml')
   end
 

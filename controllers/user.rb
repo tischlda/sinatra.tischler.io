@@ -4,6 +4,7 @@ require './models/user'
 class UserController < BaseController
   configure do
     Mongoid.load!('./config/mongoid.yml')
+    set :views, './views'
   end
 
   # match /name and /name.format

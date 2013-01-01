@@ -11,8 +11,7 @@ class UserController < BaseController
   get %r{/(?<name>[^.]+)(\.(?<format>[^.]*))?} do |name, format|
     pass unless @user = User.where(name: name).first
     @user[:vcfUrl] = get_vcf_url name
-    @userName = name
-
+    
     if !format
       slim :user
     else

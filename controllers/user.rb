@@ -2,6 +2,9 @@ require './controllers/base'
 require './models/user'
 
 class UserController < BaseController
+  helpers Sinatra::ContentFor
+  helpers Gravatarify::Helper
+
   configure do
     Mongoid.load!('./config/mongoid.yml')
     set :views, './views'

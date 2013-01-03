@@ -1,5 +1,4 @@
 require 'sinatra/content_for'
-require './controllers/base'
 require './controllers/scss'
 require './controllers/user'
 

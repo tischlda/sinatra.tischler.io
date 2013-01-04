@@ -1,8 +1,16 @@
 - content_for :head do
   title tischler.io - #{@user[:givenName]}
+
+  - if @user[:myopenid]
+    link rel="openid.server" href="http://www.myopenid.com/server"
+    link rel="openid.delegate" href="http://#{@user[:myopenid]}.myopenid.com/"
+    link rel="openid2.local_id" href="http://#{@user[:myopenid]}.myopenid.com"
+    link rel="openid2.provider" href="http://www.myopenid.com/server"
+    meta http-equiv="X-XRDS-Location" content="http://www.myopenid.com/xrds?username=#{@user[:myopenid]}.myopenid.com"
+
   link rel="stylesheet" type="text/css" href="/stylesheets/user.css"
   link rel="stylesheet" type="text/css" href="/stylesheets/dark.css"
-
+  
 - content_for :body do
   #content
     img#picture.portrait src=gravatar_url(@user[:email], size: 400, secure: true)
